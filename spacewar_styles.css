@@ -1,0 +1,128 @@
+/* Spacewar! - Zack */
+
+/* This is a CSS file, which defines visual styles for the various "elements"
+   of the html page.
+
+   It is not really important to get into the details about this, but
+   suffice to say every "thing" (shape, area, etc) in the html page, is either
+   going to have default values or the ones I describe in this file.
+
+   Each "style rule" (text followed by things enclosed in curly braces) says:
+   - any object of a particular type (e.g. html, div, canvas)
+   - which has a particular class (e.g. .centralizingContainer)
+   - and/or a particular id (e.g. #pdpMonitor)
+   - or any combination of these (at least one type, class or id)
+   ----> must have the following visual styles!
+   */
+
+/* ---------- Defining some colors and fixed values ---------- */
+
+:root {
+    --bgColor: #1f1f1f;
+    --pdpBlue: #283246;
+    --pdpBlueShadow: #171e2b;
+
+    --screenGreen: #666b5c;
+    --screenGreenMid: #5a5a50;
+    --screenGreenShadow: #363632;
+
+    --rimShadow: #323237;
+    --rimMid: #464650;
+    --rim: #9d9db0;
+
+    --pdpDim: min(90vh, 70vw);
+    --screenDim: calc(var(--pdpDim) * 0.8);
+    --sqrt3over3: 0.5773502692;
+}
+
+/* ---------- Rules that apply to almost everything ---------- */
+
+html, body {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    background-color: var(--bgColor);
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+}
+
+/* ---------- Rules that apply to very few things ------------ */
+
+/* Containers for positioning */
+div.centralizingContainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* The hexagonal PDP monitor */
+div#pdpMonitor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: var(--pdpDim);
+    width: calc(var(--pdpDim) * 1.3);
+    background-image: linear-gradient(to bottom, var(--pdpBlueShadow), var(--pdpBlue) 40%);
+}
+div#pdpMonitor:before,
+div#pdpMonitor:after {
+    content: "";
+    position: absolute;
+    height: 0;
+    border-top: calc(var(--pdpDim) / 2 + 5px) solid var(--bgColor);
+    border-bottom: calc(var(--pdpDim) / 2 + 5px) solid var(--bgColor);
+}
+div#pdpMonitor:before {
+    right: 88.46153846%;
+    border-left: 5px solid var(--bgColor);
+    border-right: calc(var(--pdpDim) * 0.15) solid transparent;
+}
+div#pdpMonitor:after {
+    left: 88.46153846%;
+    border-left: calc(var(--pdpDim) * 0.15) solid transparent;
+    border-right: 5px solid var(--bgColor);
+}
+
+/* The circular PDP screen */
+div#pdpScreenBorder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: calc(var(--screenDim) * 1.03);
+    width: calc(var(--screenDim) * 1.03);
+    border-radius: 100%;
+    background-image: conic-gradient(var(--rimShadow) 45deg,
+                                     var(--rimMid)    90deg,
+                                     var(--rim)       170deg,
+                                     var(--rimMid)    250deg,
+                                     var(--rimShadow) 315deg);
+}
+div#pdpScreen {
+    display: block;
+    position: relative;
+    height: var(--screenDim);
+    width: var(--screenDim);
+    border-radius: 100%;
+    background-image: radial-gradient(var(--screenGreen)       50%,
+                                      var(--screenGreenMid)    75%,
+                                      var(--screenGreenShadow) 100%);
+}
+div#pdpScreen.innerShadow {
+    -moz-box-shadow:    inset 0 25px 60px var(--screenGreenShadow);
+    -webkit-box-shadow: inset 0 25px 60px var(--screenGreenShadow);
+    box-shadow:         inset 0 25px 60px var(--screenGreenShadow);
+}
+
+canvas {
+    border: 1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
