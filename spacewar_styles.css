@@ -1,11 +1,11 @@
 /* Spacewar! - Zack */
 
-/* This is a CSS file, which defines visual styles for the various "elements"
-   of the html page.
+/* This is a CSS (Cascading Style Sheet) file, which defines visual styles for
+   the various "elements" of the html page.
 
    It is not really important to get into the details about this, but
-   suffice to say every "thing" (shape, area, etc) in the html page, is either
-   going to have default values or the ones I describe in this file.
+   suffice to say every "thing" (shape, area, etc) in the html page will
+   have some default attributes plus the ones I may describe in this file
 
    Each "style rule" (text followed by things enclosed in curly braces) says:
    - any object of a particular type (e.g. html, div, canvas)
@@ -13,35 +13,83 @@
    - and/or a particular id (e.g. #pdpMonitor)
    - or any combination of these (at least one type, class or id)
    ----> must have the following visual styles!
+
+   e.g. This:
+   div#canvasMessageContainer.deactivated {
+       opacity: 0;
+   }
+   can be read as:
+       a "div" element with both the class names "canvasMessageContainer" and
+       "deactivated" will have zero opacity (this is how the title text fades
+       out after you press space!)
    */
 
+/* ----------------------------------------------------------- */
 /* ---------- Defining some colors and fixed values ---------- */
+/* ----------------------------------------------------------- */
 
+/* In here are colors, sizes (for relative/dynamic resizing), and constants.
+   This is something like "good practice" for coding, so that if you ever have
+   to change something, you only have to change it once in your entire code,
+   and it will be reflected everywhere else
+   */
 :root {
-    --bgColor: #1f1f1f;
-    --pdpBlue: #283246;
-    --pdpBlueShadow: #171e2b;
+    --bgColor: #1e1c19;
 
-    --screenGreen: #666b5c;
-    --screenGreenMid: #5a5a50;
-    --screenGreenShadow: #363632;
+    --pdpBlue: #586c80;
+    --pdpBlueDark: #47566b;
+    --pdpBlueShadow: #2a3540;
 
-    --rimShadow: #323237;
-    --rimMid: #464650;
-    --rim: #9d9db0;
+    --flangeBot: #aea694;
+    --flangeTop: #aea694;
 
-    --pdpDim: min(90vh, 70vw);
-    --screenDim: calc(var(--pdpDim) * 0.8);
-    --sqrt3over3: 0.5773502692;
+    --rimLight: #faf5e6;
+    --rimMid: #d4ccb8;
+    --rimDark: #bab19c;
+    --rimShadow: #b0a692;
+
+    --screenGreen: #545547;
+    --screenGreenMid: #45473e;
+    --screenGreenDark: #41433a;
+    --screenGreenShadow: #14130c;
+
+    --canvasBg: rgba(0,0,0,0.0);
+
+    --textColor: rgb(226, 255, 240);
+
+    --pdpHeight: min(95vh, 75vw);
+    --screenDiam: calc(var(--pdpHeight) * 0.85);
+    --screenRimDiam: calc(var(--screenDiam) * 1.02);
+    --flangeLength: calc(var(--pdpHeight) * 0.524);
+    --flangeThickness: calc(var(--screenDiam) * 0.015);
+    --canvasHeight: calc(var(--screenDiam) * 0.7);
+
+    --fadeOutTime: 1.5s;
+
+    --2u: calc(var(--pdpHeight) * 0.002857142857);
+    --7u: calc(var(--pdpHeight) * 0.01);
+    --n7u: calc(var(--pdpHeight) * -0.01);
+    --14u: calc(var(--pdpHeight) * 0.02);
+    --17u: calc(var(--pdpHeight) * 0.025);
+    --21u: calc(var(--pdpHeight) * 0.03);
+    --28u: calc(var(--pdpHeight) * 0.04);
+    --35u: calc(var(--pdpHeight) * 0.05);
+    --49u: calc(var(--pdpHeight) * 0.07);
+    --70u: calc(var(--pdpHeight) * 0.10);
+    --140u: calc(var(--pdpHeight) * 0.20);
+    --n140u: calc(var(--pdpHeight) * -0.20);
 }
 
+/* ----------------------------------------------------------- */
 /* ---------- Rules that apply to almost everything ---------- */
+/* ----------------------------------------------------------- */
 
 html, body {
     box-sizing: border-box;
     height: 100%;
     width: 100%;
     background-color: var(--bgColor);
+    font-family: "Courier New", Courier, monospace;
 }
 *, *:before, *:after {
     box-sizing: inherit;
@@ -51,7 +99,9 @@ html, body {
     background-color: transparent;
 }
 
-/* ---------- Rules that apply to very few things ------------ */
+/* ----------------------------------------------------------- */
+/* ---------- Rules that apply to specific things ------------ */
+/* ----------------------------------------------------------- */
 
 /* Containers for positioning */
 div.centralizingContainer {
@@ -68,61 +118,162 @@ div#pdpMonitor {
     justify-content: center;
     align-items: center;
     position: relative;
-    height: var(--pdpDim);
-    width: calc(var(--pdpDim) * 1.3);
-    background-image: linear-gradient(to bottom, var(--pdpBlueShadow), var(--pdpBlue) 40%);
+    height: var(--pdpHeight);
+    width: calc(var(--pdpHeight) * 1.3);
+    min-width: calc(var(--pdpHeight) * 1.3);
+    background-image: linear-gradient(to bottom,
+                                      var(--pdpBlueShadow) 0%,
+                                      var(--pdpBlueDark)   7%,
+                                      var(--pdpBlue)       40%);
 }
-div#pdpMonitor:before,
-div#pdpMonitor:after {
-    content: "";
+div#pdpMonitorLeft,
+div#pdpMonitorRight {
     position: absolute;
     height: 0;
-    border-top: calc(var(--pdpDim) / 2 + 5px) solid var(--bgColor);
-    border-bottom: calc(var(--pdpDim) / 2 + 5px) solid var(--bgColor);
+    border-top: calc(var(--pdpHeight) / 2 + 5px) solid var(--bgColor);
+    border-bottom: calc(var(--pdpHeight) / 2 + 5px) solid var(--bgColor);
 }
-div#pdpMonitor:before {
+div#pdpMonitorLeft {
     right: 88.46153846%;
     border-left: 5px solid var(--bgColor);
-    border-right: calc(var(--pdpDim) * 0.15) solid transparent;
+    border-right: calc(var(--pdpHeight) * 0.15) solid transparent;
 }
-div#pdpMonitor:after {
+div#pdpMonitorRight {
     left: 88.46153846%;
-    border-left: calc(var(--pdpDim) * 0.15) solid transparent;
+    border-left: calc(var(--pdpHeight) * 0.15) solid transparent;
     border-right: 5px solid var(--bgColor);
 }
 
+/* The flanges on either side of the monitor */
+div#leftTopFlange,
+div#leftBottomFlange,
+div#rightTopFlange,
+div#rightBottomFlange {
+    display: block;
+    position: absolute;
+    border-radius: var(--2u);
+    height: var(--flangeLength);
+    width: var(--flangeThickness);
+}
+div#leftTopFlange,
+div#leftBottomFlange {
+    left: var(--49u);
+    -ms-transform: rotate(16.5deg); /* IE 9 */
+    transform: rotate(16.5deg);
+}
+div#rightTopFlange,
+div#rightBottomFlange {
+    right: var(--49u);
+    -ms-transform: rotate(16.5deg); /* IE 9 */
+    transform: rotate(16.5deg);
+}
+div#leftTopFlange,
+div#rightTopFlange {
+    top: var(--n7u);
+    background-color: var(--flangeTop);
+}
+div#leftBottomFlange,
+div#rightBottomFlange {
+    bottom: var(--n7u);
+    background-color: var(--flangeBot);
+}
+div#leftBottomFlange,
+div#rightTopFlange {
+    -ms-transform: rotate(-16.5deg); /* IE 9 */
+    transform: rotate(-16.5deg);
+}
+
 /* The circular PDP screen */
-div#pdpScreenBorder {
+div#pdpScreenRim {
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    height: calc(var(--screenDim) * 1.03);
-    width: calc(var(--screenDim) * 1.03);
+    height: var(--screenRimDiam);
+    width: var(--screenRimDiam);
     border-radius: 100%;
+    background-color: var(--rimMid);
     background-image: conic-gradient(var(--rimShadow) 45deg,
-                                     var(--rimMid)    90deg,
-                                     var(--rim)       170deg,
+                                     var(--rimDark)   85deg,
+                                     var(--rimMid)    100deg,
+                                     var(--rimLight)  170deg,
                                      var(--rimMid)    250deg,
+                                     var(--rimDark)   275deg,
                                      var(--rimShadow) 315deg);
 }
 div#pdpScreen {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
-    height: var(--screenDim);
-    width: var(--screenDim);
+    height: var(--screenDiam);
+    width: var(--screenDiam);
     border-radius: 100%;
-    background-image: radial-gradient(var(--screenGreen)       50%,
-                                      var(--screenGreenMid)    75%,
-                                      var(--screenGreenShadow) 100%);
+    background-image: radial-gradient(var(--screenGreen)       85%,
+                                      var(--screenGreenDark)   90%,
+                                      var(--screenGreenShadow) 92%);
 }
 div#pdpScreen.innerShadow {
-    -moz-box-shadow:    inset 0 25px 60px var(--screenGreenShadow);
-    -webkit-box-shadow: inset 0 25px 60px var(--screenGreenShadow);
-    box-shadow:         inset 0 25px 60px var(--screenGreenShadow);
+    -moz-box-shadow:    inset 0 0 var(--49u) var(--screenGreenShadow),
+                        inset 0 var(--7u) var(--21u) var(--screenGreenShadow);
+    -webkit-box-shadow: inset 0 0 var(--49u) var(--screenGreenShadow),
+                        inset 0 var(--7u) var(--21u) var(--screenGreenShadow);
+    box-shadow:         inset 0 0 var(--49u) var(--screenGreenShadow),
+                        inset 0 var(--7u) var(--21u) var(--screenGreenShadow);
 }
 
-canvas {
-    border: 1px solid #d3d3d3;
-    background-color: #f1f1f1;
+/* The "canvas" element */
+canvas#pdpCanvas {
+    display: block;
+    margin: 0;
+    border: none;
+    height: var(--canvasHeight);
+    width: var(--canvasHeight);
+    background-color: var(--canvasBg);
+}
+
+/* Text */
+div#canvasMessageContainer {
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    -webkit-transition: opacity var(--fadeOutTime) ease-in-out;
+    -moz-transition: opacity var(--fadeOutTime) ease-in-out;
+    -ms-transition: opacity var(--fadeOutTime) ease-in-out;
+    -o-transition: opacity var(--fadeOutTime) ease-in-out;
+    opacity: 1;
+}
+div#canvasMessageContainer.deactivated {
+    opacity: 0;
+}
+p.canvasMessage {
+    color: var(--textColor);
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 auto;
+}
+p.canvasMessage.big {
+    font-size: var(--70u);
+    margin-bottom: var(--21u);
+}
+p.canvasMessage.medium {
+    opacity: 0;
+    font-size: var(--21u);
+    margin-top: var(--14u);
+}
+p.canvasMessage.small {
+    opacity: 0;
+    font-size: var(--14u);
+    line-height: var(--17u);
+    margin-bottom: var(--7u);
+}
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
 }

@@ -1,0 +1,78 @@
+<!-- Spacewar! - Zack -->
+
+<!-- This is an HTML file, which defines the page itself -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- The <head> tag contains meta information about the page -->
+
+    <!-- This is just boilerplate stuff, and is not important -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- This defines the title of the page seen in your browser's tabs -->
+    <title> Spacewar! </title>
+
+    <!-- This defines where instructions about visual styles are located -->
+    <link rel="stylesheet" href="spacewar_styles.css">
+</head>
+
+<body>
+<!-- The <body> tag contains the "elements" of the page -->
+
+<div class="centralizingContainer">
+
+    <div id="pdpMonitor">
+
+        <div id="pdpMonitorLeft"></div>
+        <div id="pdpMonitorRight"></div>
+
+        <div id="leftTopFlange"></div>
+        <div id="leftBottomFlange"></div>
+        <div id="rightTopFlange"></div>
+        <div id="rightBottomFlange"></div>
+
+        <div id="pdpScreenRim">
+
+            <div id="pdpScreen" class="innerShadow">
+
+                <canvas id="pdpCanvas">
+                    This message only appears if your browser
+                    does not support the canvas element!
+                </canvas>
+
+                <div id="canvasMessageContainer">
+                    <p class="canvasMessage big">
+                        SPACEWAR
+                    </p>
+                    <p class="canvasMessage small">
+                        Player 1: W to fire torpedoes
+                    </p>
+                    <p class="canvasMessage small">
+                        A/D to rotate, and S for thrust.
+                    </p>
+                    <p class="canvasMessage small">
+                        Player 2: I to fire torpedoes
+                    </p>
+                    <p class="canvasMessage small">
+                        J/L to rotate, and K for thrust.
+                    </p>
+                    <p class="canvasMessage medium">
+                        press space to start!
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+<script src="spacewar_code.js"></script>
+
+</html>
+
