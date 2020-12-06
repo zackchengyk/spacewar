@@ -51,9 +51,9 @@ let scalePause    = 1; // duration between ship destruction and reset
 let scaleShip     = 1; // dimensions of ships
 
 // Even easier modifiers: change any number of these between "false" and "true"
-let make_this_faster_and_less_historically_accurate = true;
+let make_this_faster_and_less_historically_accurate = false;
 let do_a_projectile_physics_demonstration = false;        // These two conflict
-let start_with_projectiles_all_over_the_place = true;    // These two conflict
+let start_with_projectiles_all_over_the_place = false;    // These two conflict
 let make_things_bigger = false;
 let truly_random_starting_positions = false;    // These two also conflict
 let fly_me_to_the_sun = false;                  // These two also conflict
