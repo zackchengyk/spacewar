@@ -51,7 +51,7 @@ let scalePause    = 1; // duration between ship destruction and reset
 let scaleShip     = 1; // dimensions of ships
 
 // Even easier modifiers: change any number of these between "false" and "true"
-let make_this_faster_and_less_historically_accurate = false;
+let make_this_faster_and_less_historically_accurate = true;
 let do_a_projectile_physics_demonstration = false;        // These two conflict
 let start_with_projectiles_all_over_the_place = false;    // These two conflict
 let make_things_bigger = false;
@@ -85,7 +85,7 @@ if (make_things_bigger) {
 
 // Simulation-related Constants (Time and Space)
 let fps = 20;                               // frames per second
-let actualToFakeDim = 2;                    // ratio of actual and fake dim.
+let actualToFakeDim = 1;                    // ratio of actual and fake dim.
 let actualDim = 0;                          // actual height / width of canvas
 let fakeDim = actualDim * actualToFakeDim;  // the canvas "resolution"
 let pc = fakeDim / 1000;                    // 1 pc is 1/1000th of the canvas
